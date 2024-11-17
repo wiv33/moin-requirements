@@ -1,3 +1,27 @@
 spring:
-    application:
-        name: demo-moin
+  application:
+    name: demo-moin
+
+  r2dbc:
+#    url: r2dbc:h2:mem:///moin;DB_CLOSE_DELAY=-1
+    url: r2dbc:h2:file:///./tmp/moin;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    pool:
+      initial-size: 5
+      max-size: 10
+      max-idle-time: 30m
+      validation-query: SELECT 1
+      enabled: true
+  sql:
+    init:
+      schema-locations: classpath:/db/DDL.sql
+      mode: embedded
+#      data-locations: classpath:/db/DML.sql
+
+
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG

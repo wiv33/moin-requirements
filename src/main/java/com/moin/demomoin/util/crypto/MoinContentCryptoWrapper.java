@@ -10,6 +10,7 @@ public class MoinContentCryptoWrapper implements MoinContentCrypto {
 
   /**
    * Encrypts the given plain text.
+   * 암호화
    *
    * @param plainText the plain text to encrypt
    * @return the encrypted text
@@ -21,6 +22,7 @@ public class MoinContentCryptoWrapper implements MoinContentCrypto {
 
   /**
    * Decrypts the given cipher text.
+   * 복호화
    *
    * @param cipherText the cipher text to decrypt
    * @return the decrypted text

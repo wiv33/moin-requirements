@@ -9,44 +9,49 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
+import org.springframework.util.Assert;
 
-public class MoinGcmCrypto implements MoinCrypto {
-    private final Cipher cipher;
+public class MoinCryptoImpl implements MoinCrypto {
 
-    MoinGcmCrypto() throws NoSuchPaddingException, NoSuchAlgorithmException {
-        this.cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
-    }
+  private final Cipher cipher;
 
-    public byte[] encryptWithIv(byte[] plainText, Key key, byte[] iv) throws GeneralSecurityException {
-        byte[] encryptedText = encrypt(plainText, key, iv);
-        return ByteBuffer.allocate(iv.length + encryptedText.length)
-                         .put(iv)
-                         .put(encryptedText)
-                         .array();
-    }
+  MoinCryptoImpl() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    this.cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
+  }
 
-    public String decryptWithIv(byte[] cipherText, Key key) throws GeneralSecurityException, UnsupportedEncodingException {
-        ByteBuffer bb = ByteBuffer.wrap(cipherText);
+  public byte[] encryptWithIv(byte[] plainText, Key key, byte[] iv)
+      throws GeneralSecurityException {
+    byte[] encryptedText = encrypt(plainText, key, iv);
+    return ByteBuffer.allocate(iv.length + encryptedText.length)
+        .put(iv)
+        .put(encryptedText)
+        .array();
+  }
 
-        byte[] iv = new byte[GCM_IV_LENGTH];
-        bb.get(iv);
+  public String decryptWithIv(byte[] cipherText, Key key)
+      throws GeneralSecurityException, UnsupportedEncodingException {
+    ByteBuffer bb = ByteBuffer.wrap(cipherText);
 
-        byte[] cText = new byte[bb.remaining()];
-        bb.get(cText);
+    byte[] iv = new byte[GCM_IV_LENGTH];
+    bb.get(iv);
 
-        return new String(decrypt(cText, key, iv), StandardCharsets.UTF_8);
-    }
+    byte[] cText = new byte[bb.remaining()];
+    bb.get(cText);
 
-    @Override
-    public byte[] encrypt(byte[] plainText, Key key, byte[] iv) throws GeneralSecurityException {
-        cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(GCM_TAG_BIT, iv));
-        return cipher.doFinal(plainText);
-    }
+    Assert.isTrue(bb.remaining() == 0, "Invalid cipherText");
+    return new String(decrypt(cText, key, iv), StandardCharsets.UTF_8);
+  }
 
-    @Override
-    public byte[] decrypt(byte[] cipherText, Key key, byte[] iv) throws GeneralSecurityException {
-        cipher.init(Cipher.DECRYPT_MODE, key, new GCMParameterSpec(GCM_TAG_BIT, iv));
-        return cipher.doFinal(cipherText);
-    }
+  @Override
+  public byte[] encrypt(byte[] plainText, Key key, byte[] iv) throws GeneralSecurityException {
+    cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(GCM_TAG_BIT, iv));
+    return cipher.doFinal(plainText);
+  }
+
+  @Override
+  public byte[] decrypt(byte[] cipherText, Key key, byte[] iv) throws GeneralSecurityException {
+    cipher.init(Cipher.DECRYPT_MODE, key, new GCMParameterSpec(GCM_TAG_BIT, iv));
+    return cipher.doFinal(cipherText);
+  }
 
 }

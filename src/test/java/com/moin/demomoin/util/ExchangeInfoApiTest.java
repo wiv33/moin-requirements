@@ -2,32 +2,26 @@ package com.moin.demomoin.util;
 
 import com.moin.demomoin.domain.ExchangeInformation;
 import com.moin.demomoin.domain.MoinCurrencyType;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-class ExchangeApiTest {
+@DisplayName("환율 정보 API 테스트")
+class ExchangeInfoApiTest {
 
   @Test
+  @DisplayName("환율 정보 조회 테스트")
   void testShouldGetExchangeInformation() {
-    Flux<ExchangeInformation> exchangeRate = ExchangeApi.getExchangeRate(
+    Mono<Map<MoinCurrencyType, ExchangeInformation>> exchangeRate = ExchangeInfoApi.getExchangeRate(
             MoinCurrencyType.USD, MoinCurrencyType.JPY)
         .log();
 
     StepVerifier.create(exchangeRate)
         .assertNext(Assertions::assertNotNull)
-        .assertNext(Assertions::assertNotNull)
         .verifyComplete();
   }
 
-  @Test
-  void testShouldGetExchangeInformationUSD() {
-    Flux<ExchangeInformation> exchangeRate = ExchangeApi.getExchangeRate(MoinCurrencyType.USD)
-        .log();
-
-    StepVerifier.create(exchangeRate)
-        .assertNext(Assertions::assertNotNull)
-        .verifyComplete();
-  }
 }

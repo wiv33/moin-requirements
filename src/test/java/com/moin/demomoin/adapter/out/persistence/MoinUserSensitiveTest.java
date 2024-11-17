@@ -4,14 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.data.relational.core.query.Query.query;
 
-import com.moin.demomoin.adapter.in.web.config.db.R2dbcConfig;
 import com.moin.demomoin.adapter.out.persistence.entity.MoinIdType;
 import com.moin.demomoin.adapter.out.persistence.entity.MoinUser;
-import com.moin.demomoin.domain.converter.MoinIdTypeConverter;
 import com.moin.demomoin.domain.converter.MoinUserConverter;
 import io.r2dbc.spi.ConnectionFactory;
 import java.util.List;
-import net.bytebuddy.build.ToStringPlugin.Exclude;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +27,7 @@ import reactor.test.StepVerifier;
 @DataR2dbcTest
 @DisplayName("민감정보 암호화")
 @Import({TestR2dbcConfig.class})
-public class MoinUserSensitiveText {
+public class MoinUserSensitiveTest {
 
   public static final String userId = "moin@themoin.com";
 

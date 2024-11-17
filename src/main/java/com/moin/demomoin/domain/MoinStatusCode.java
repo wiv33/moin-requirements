@@ -1,4 +1,4 @@
-package com.moin.demomoin.domain.exception;
+package com.moin.demomoin.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +17,15 @@ public enum MoinStatusCode {
   USER_ALREADY_EXISTS(400, "USER_ALREADY_EXISTS", "이미 존재하는 사용자입니다."),
   USER_NOT_FOUND(400, "USER_NOT_FOUND", "사용자를 찾을 수 없습니다."),
 
-  NEGATIVE_NUMBER(500, "NEGATIVE_NUMBER", "보내는 금액은 0보다 커야합니다."),
+  NEGATIVE_NUMBER(400, "NEGATIVE_NUMBER", "보내는 금액은 0보다 커야합니다."),
 
   UNAUTHORIZED(401, "UNAUTHORIZED", "인증되지 않은 사용자입니다."),
   INVALID_TOKEN_EXPIRED(403, "INVALID_TOKEN_EXPIRED", "만료된 토큰입니다."),
   FORBIDDEN(403, "FORBIDDEN", "권한이 없습니다."),
-  LIMIT_EXCESS(500, "LIMIT_EXCESS", "1일 한도 초과입니다."),
-  QUOTE_EXPIRED(500, "QUOTE_EXPIRED", "견적이 만료되었습니다."),
+  INVALID_ALREADY_USED_QUOTE(400, "INVALID_ALREADY_USED_QUOTE", "이미 사용된 견적서입니다."),
+  LIMIT_EXCESS(400, "LIMIT_EXCESS", "1일 한도 초과입니다."),
+  QUOTE_EXPIRED(400, "QUOTE_EXPIRED", "견적이 만료되었습니다."),
+
   UNKNOWN_ERROR(500, "UNKNOWN_ERROR", "서버가 알 수 없는 오류가 발생했습니다."),
   ;
 

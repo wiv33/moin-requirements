@@ -6,13 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.moin.demomoin.application.port.in.TransferQuoteCommand;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-class MoinTransferCalculationUnitTest {
+@DisplayName("송금 계산 테스트")
+class MoinTransferRequestCalculationUnitTest {
 
   @Test
+  @DisplayName("송금 계산 테스트 - KRW -> USD")
   void testShouldBeSameEstimatedAndCalculatedAmountUSD() {
     var command = new TransferQuoteCommand(605_000, MoinCurrencyType.USD);
 
@@ -40,6 +43,7 @@ class MoinTransferCalculationUnitTest {
   }
 
   @Test
+  @DisplayName("송금 계산 테스트 - KRW -> JPY & USD")
   void testShouldBeSameEstimatedAndCalculatedAmountJPY() {
     var command = new TransferQuoteCommand(300_000, MoinCurrencyType.JPY);
 

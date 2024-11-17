@@ -22,8 +22,7 @@ class MoinContentCryptoWrapperTest {
   @BeforeAll
   static void beforeAll() {
     key = "Ruc/=#(*mNL1?f+v$C&9a#vSmbKa%)X<";
-    secretKey = new SecretKeySpec(
-        key.getBytes(), "AES");
+    secretKey = new SecretKeySpec(key.getBytes(), "AES");
     cryptoWrapper = new MoinContentCryptoWrapper(secretKey);
   }
 

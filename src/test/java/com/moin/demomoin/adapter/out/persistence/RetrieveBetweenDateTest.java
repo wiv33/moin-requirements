@@ -11,6 +11,7 @@ import com.moin.demomoin.util.InstantUtil;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,7 +22,8 @@ import org.springframework.data.relational.core.query.Query;
 import reactor.test.StepVerifier;
 
 @DataR2dbcTest
-public class TemplateAvailableTest {
+@DisplayName("날짜 범위 조회")
+public class RetrieveBetweenDateTest {
 
   @Autowired
   R2dbcEntityTemplate template;
@@ -34,6 +36,7 @@ public class TemplateAvailableTest {
     );
   }
 
+  @DisplayName("날짜 범위 조회 테스트")
   @ParameterizedTest
   @MethodSource("availableDateWithExpectCount")
   void testShouldEqualDateAndExpectedCount(Instant baseTime, int expected) {

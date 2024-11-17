@@ -1,4 +1,4 @@
-package com.dabeeo.eartheye2.common;
+package com.moin.demomoin.common;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface WebAdapter {
 
-  @AliasFor(annotation = org.springframework.stereotype.Component.class)
+  @AliasFor(annotation = Component.class)
   String value() default "";
 }

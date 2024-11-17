@@ -15,7 +15,7 @@ public class BearerTokenAuthenticationSuccessHandler implements ServerAuthentica
     var response = webFilterExchange.getExchange().getResponse();
     response.setStatusCode(HttpStatus.OK);
     response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-    return response.setComplete();
+    return response.writeWith(Mono.just(response.bufferFactory().wrap("".getBytes())));
   }
 
 }

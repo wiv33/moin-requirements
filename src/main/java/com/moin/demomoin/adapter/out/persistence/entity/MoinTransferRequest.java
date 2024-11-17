@@ -2,10 +2,14 @@ package com.moin.demomoin.adapter.out.persistence.entity;
 
 import com.moin.demomoin.common.IdGenerator;
 import com.moin.demomoin.domain.MoinCurrencyType;
+import com.moin.demomoin.domain.dto.MoinTransferDto;
+import com.moin.demomoin.util.InstantUtil;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -21,10 +25,11 @@ import org.springframework.data.relational.core.mapping.Table;
   "requestedDate": "2023-12-01 10:30:21"  //송금 요청 시간
 }
  */
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("moin_transfer")
-public class MoinTransfer {
+@Table("moin_transfer_request")
+public class MoinTransferRequest {
 
   @Id
   private Long id;
@@ -40,12 +45,21 @@ public class MoinTransfer {
   private BigDecimal targetAmount;
   private Instant requestedDate;
 
-  public static MoinTransfer from(
+  public static MoinTransferRequest from(
       String userId, Long quoteId, BigDecimal sourceAmount, BigDecimal fee, BigDecimal feeRate,
       BigDecimal usdExchangeRate, BigDecimal usdAmount, MoinCurrencyType targetCurrency,
       BigDecimal exchangeRate, BigDecimal targetAmount, Instant requestedDate) {
-    return new MoinTransfer(IdGenerator.generate(), userId, quoteId, sourceAmount, fee, feeRate,
+    return new MoinTransferRequest(IdGenerator.generate(), userId, quoteId, sourceAmount, fee,
+        feeRate,
         usdExchangeRate, usdAmount, targetCurrency, exchangeRate, targetAmount, requestedDate);
   }
+
+  public MoinTransferDto.RequestResponse toResponse() {
+    return new MoinTransferDto.RequestResponse(sourceAmount, fee, usdExchangeRate, usdAmount,
+        targetCurrency, exchangeRate, targetAmount, InstantUtil.toLocalDateTime(requestedDate),
+        feeRate.multiply(BigDecimal.valueOf(100))
+            .setScale(2, RoundingMode.HALF_UP) + "%");
+  }
+
 
 }

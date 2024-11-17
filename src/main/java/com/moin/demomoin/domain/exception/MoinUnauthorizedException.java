@@ -1,16 +1,21 @@
 package com.moin.demomoin.domain.exception;
 
-public class MoinUnauthorized extends MoinCommonMessage {
+import com.moin.demomoin.domain.MoinStatusCode;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-  public MoinUnauthorized(MoinStatusCode message) {
+@ResponseStatus(code = HttpStatus.FORBIDDEN, value = HttpStatus.FORBIDDEN)
+public class MoinUnauthorizedException extends MoinCommonMessageException {
+
+  public MoinUnauthorizedException(MoinStatusCode message) {
     super(message.getCode());
   }
 
-  public MoinUnauthorized(MoinStatusCode message, Object... args) {
+  public MoinUnauthorizedException(MoinStatusCode message, Object... args) {
     super(message.getCode(), args);
   }
 
-  public MoinUnauthorized(MoinStatusCode message, Throwable cause, Object... args) {
+  public MoinUnauthorizedException(MoinStatusCode message, Throwable cause, Object... args) {
     super(message.getCode(), cause, args);
   }
 }

@@ -1,7 +1,9 @@
-package com.moin.demomoin.adapter.in.web.config.auth;
+package com.moin.demomoin.adapter.in.web.config;
 
 import com.moin.demomoin.domain.MoinResponse;
-import com.moin.demomoin.domain.exception.MoinStatusCode;
+import com.moin.demomoin.domain.exception.MoinInvalidArgumentException;
+import com.moin.demomoin.domain.exception.MoinNotFoundException;
+import com.moin.demomoin.domain.MoinStatusCode;
 import com.moin.demomoin.domain.exception.MoinUserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +18,19 @@ public class GlobalExceptionHandler extends ResponseStatusExceptionHandler {
   public Mono<MoinResponse> handleResourceNotFoundException(MoinUserAlreadyExistsException ex) {
     return Mono.create(
         sink -> sink.success(new MoinResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()))
+    );
+  }
+  @ExceptionHandler(MoinNotFoundException.class)
+  public Mono<MoinResponse> handleResourceNotFoundException(MoinNotFoundException ex) {
+    return Mono.create(
+        sink -> sink.success(new MoinResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage()))
+    );
+  }
+
+  @ExceptionHandler(MoinInvalidArgumentException.class)
+  public Mono<MoinResponse> handleInvalidArgumentException(MoinInvalidArgumentException ex) {
+    return Mono.create(
+        sink -> sink.success(new MoinResponse(MoinStatusCode.INVALID_ARGUMENT.getStatus(), ex.getMessage()))
     );
   }
 
